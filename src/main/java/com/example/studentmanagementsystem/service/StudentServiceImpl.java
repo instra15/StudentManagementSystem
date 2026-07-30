@@ -71,7 +71,7 @@ public class StudentServiceImpl implements StudentService{
             return Response.isSuccess(null,new StudentAlreadyExist("Student: " + student.getStudentNo() + ":" + student.getName() + "exists."));
         }
         Student student2=studentRepository.save(student);
-        return Response.isSuccess(StudentConverter.Convert(student),null);
+        return Response.isSuccess(StudentConverter.Convert(student2),null);
     }
 
     public Response<StudentDTO> deleteStudent(long id)
