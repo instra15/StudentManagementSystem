@@ -1,7 +1,9 @@
 package com.example.studentmanagementsystem.service;
 
+import com.example.studentmanagementsystem.Converter.StudentConverter;
 import com.example.studentmanagementsystem.DAO.Student;
 import com.example.studentmanagementsystem.DAO.StudentRepository;
+import com.example.studentmanagementsystem.DTO.StudentDTO;
 import com.example.studentmanagementsystem.Response;
 import com.example.studentmanagementsystem.exception.StudentAlreadyExist;
 import com.example.studentmanagementsystem.exception.StudentNotFoundException;
@@ -14,12 +16,12 @@ public class StudentServiceImpl implements StudentService{
     @Autowired
     StudentRepository studentRepository;
 
-    public Response<Student> getStudentById(Long id)
+    public Response<StudentDTO> getStudentById(Long id)
     {
         try
         {
             Student student=studentRepository.findById(id).orElseThrow(()->new StudentNotFoundException("Student not found with id: "+id));
-            return Response.isSuccess(student,null);
+            return Response.isSuccess(StudentConverter.Convert(student),null);
         }
         catch (StudentNotFoundException e)
         {
@@ -27,7 +29,7 @@ public class StudentServiceImpl implements StudentService{
         }
     }
 
-    public Response<Student> getStudentByName(String name)
+    public Response<StudentDTO> getStudentByName(String name)
     {
         try
         {
@@ -36,7 +38,7 @@ public class StudentServiceImpl implements StudentService{
             {
                 throw new StudentNotFoundException("Student not found with name: " + name);
             }
-            return Response.isSuccess(student,null);
+            return Response.isSuccess(StudentConverter.Convert(student),null);
         }
         catch (StudentNotFoundException e)
         {
@@ -44,7 +46,7 @@ public class StudentServiceImpl implements StudentService{
         }
     }
 
-    public Response<Student> getStudentByStudentNo(String studentNo)
+    public Response<StudentDTO> getStudentByStudentNo(String studentNo)
     {
         try
         {
@@ -53,7 +55,7 @@ public class StudentServiceImpl implements StudentService{
             {
                 throw new StudentNotFoundException("Student not found with no: " + studentNo);
             }
-            return Response.isSuccess(student,null);
+            return Response.isSuccess(StudentConverter.Convert(student),null);
         }
         catch (StudentNotFoundException e)
         {
@@ -61,7 +63,7 @@ public class StudentServiceImpl implements StudentService{
         }
     }
 
-    public Response<Student> addNewStudent(Student student)
+    public Response<StudentDTO> addNewStudent(Student student)
     {
         Student student1=studentRepository.findByStudentNo(student.getStudentNo());
         if(student1!=null)
@@ -69,10 +71,10 @@ public class StudentServiceImpl implements StudentService{
             return Response.isSuccess(null,new StudentAlreadyExist("Student: " + student.getStudentNo() + ":" + student.getName() + "exists."));
         }
         Student student2=studentRepository.save(student);
-        return Response.isSuccess(student,null);
+        return Response.isSuccess(StudentConverter.Convert(student),null);
     }
 
-    public Response<Student> deleteStudent(long id)
+    public Response<StudentDTO> deleteStudent(long id)
     {
         try
         {

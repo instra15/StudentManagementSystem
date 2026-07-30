@@ -2,10 +2,12 @@ package com.example.studentmanagementsystem;
 
 
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @AllArgsConstructor
 @NoArgsConstructor
+@Data
 public class Response<T> {
     private T data;
 
@@ -15,14 +17,17 @@ public class Response<T> {
 
     public static <K> Response<K> isSuccess(K data,Exception e)
     {
-        if (e==null)
+        Response<K> response=new Response<>();
+        if(e!=null)
         {
-            return new Response<>(data,true,null);
+            response.setData(data);
+            response.setSuccess(false);
+            response.setErrorMsg(e.getMessage());
+            return response;
         }
-        else
-        {
-            return new Response<>(data,false,e.getMessage());
-        }
+        response.setData(data);
+        response.setSuccess(true);
+        return response;
     }
 
 }

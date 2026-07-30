@@ -1,6 +1,7 @@
 package com.example.studentmanagementsystem.controller;
 
 import com.example.studentmanagementsystem.DAO.Student;
+import com.example.studentmanagementsystem.DTO.StudentDTO;
 import com.example.studentmanagementsystem.Response;
 import com.example.studentmanagementsystem.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,20 +15,20 @@ public class StudentController {
     @Autowired
     private StudentService studentService;
 
-    @GetMapping("/student/find/{id}")
-    public Response<Student> SearchStudentById(@PathVariable long id)
+    @GetMapping("/student/find/id:{id}")
+    public Response<StudentDTO> SearchStudentById(@PathVariable long id)
     {
         return studentService.getStudentById(id);
     }
 
-    @GetMapping("/student/find/{name}")
-    public Response<Student> SearchStudentByName(@PathVariable String name)
+    @GetMapping("/student/find/name:{name}")
+    public Response<StudentDTO> SearchStudentByName(@PathVariable String name)
     {
         return studentService.getStudentByName(name);
     }
 
-    @GetMapping("/student/find/{no}")
-    public Response<Student> SearchStudentByNo(@PathVariable String no)
+    @GetMapping("/student/find/no:{no}")
+    public Response<StudentDTO> SearchStudentByNo(@PathVariable String no)
     {
         return studentService.getStudentByStudentNo(no);
     }
