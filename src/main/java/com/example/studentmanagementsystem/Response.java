@@ -20,7 +20,6 @@ public class Response<T> {
         Response<K> response=new Response<>();
         if(e!=null)
         {
-            response.setData(data);
             response.setSuccess(false);
             response.setErrorMsg(e.getMessage());
             return response;

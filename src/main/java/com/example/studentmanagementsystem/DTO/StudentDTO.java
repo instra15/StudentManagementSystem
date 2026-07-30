@@ -13,7 +13,7 @@ public class StudentDTO {
 
     private String name;
 
-    private int age;
+    private Integer age;
 
     private String className;
 }
