@@ -63,8 +63,9 @@ public class StudentServiceImpl implements StudentService{
         }
     }
 
-    public Response<StudentDTO> addNewStudent(Student student)
+    public Response<StudentDTO> addNewStudent(StudentDTO studentDTO)
     {
+        Student student=StudentConverter.Convert(studentDTO);
         Student student1=studentRepository.findByStudentNo(student.getStudentNo());
         if(student1!=null)
         {

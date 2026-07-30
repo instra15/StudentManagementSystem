@@ -1,6 +1,5 @@
 package com.example.studentmanagementsystem.controller;
 
-import com.example.studentmanagementsystem.DAO.Student;
 import com.example.studentmanagementsystem.DTO.StudentDTO;
 import com.example.studentmanagementsystem.Response;
 import com.example.studentmanagementsystem.service.StudentService;
@@ -32,9 +31,9 @@ public class StudentController {
     }
 
     @PostMapping("/student/add")
-    public Response<StudentDTO> addNewStudent(@RequestBody Student student)
+    public Response<StudentDTO> addNewStudent(@RequestBody StudentDTO studentDTO)
     {
-        return studentService.addNewStudent(student);
+        return studentService.addNewStudent(studentDTO);
     }
 
 

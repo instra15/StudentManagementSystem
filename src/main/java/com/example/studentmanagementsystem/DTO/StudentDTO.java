@@ -15,5 +15,5 @@ public class StudentDTO {
 
     private int age;
 
-    private int className;
+    private String className;
 }

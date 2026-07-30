@@ -12,7 +12,7 @@ public interface StudentService {
 
     Response<StudentDTO> getStudentByName(String name);
 
-    Response<StudentDTO> addNewStudent(Student student);
+    Response<StudentDTO> addNewStudent(StudentDTO studentDTO);
 
     Response<StudentDTO> deleteStudent(long id);
 
