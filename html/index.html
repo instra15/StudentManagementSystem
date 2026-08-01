@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>学生管理系统</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎓</text></svg>">
+</head>
+<body>
+    <div class="app-container">
+        <!-- 左侧导航栏 -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <span class="logo-icon">🎓</span>
+                    <span class="logo-text">学生管理系统</span>
+                </div>
+            </div>
+            <nav class="nav-menu">
+                <button class="nav-item active" data-page="dashboard">
+                    <span class="nav-icon">📊</span>
+                    <span class="nav-text">概览</span>
+                </button>
+                <button class="nav-item" data-page="search">
+                    <span class="nav-icon">🔍</span>
+                    <span class="nav-text">查询学生</span>
+                </button>
+                <button class="nav-item" data-page="add">
+                    <span class="nav-icon">➕</span>
+                    <span class="nav-text">新增学生</span>
+                </button>
+                <button class="nav-item" data-page="delete">
+                    <span class="nav-icon">🗑️</span>
+                    <span class="nav-text">删除学生</span>
+                </button>
+            </nav>
+            <div class="sidebar-footer">
+                <div class="api-status">
+                    <span class="status-dot" id="statusDot"></span>
+                    <span class="status-text" id="statusText">检测中...</span>
+                </div>
+            </div>
+        </aside>
+
+        <!-- 主内容区 -->
+        <main class="main-content">
+            <!-- 顶部栏 -->
+            <header class="top-bar">
+                <h1 class="page-title" id="pageTitle">概览</h1>
+                <div class="top-actions">
+                    <div class="backend-config">
+                        <label for="backendUrl">后端地址：</label>
+                        <input type="text" id="backendUrl" value="http://localhost:8080" placeholder="http://localhost:8080">
+                        <button id="testConnection" class="btn btn-sm">测试连接</button>
+                    </div>
+                </div>
+            </header>
+
+            <!-- 概览页面 -->
+            <section class="page" id="page-dashboard">
+                <div class="dashboard-cards">
+                    <div class="stat-card">
+                        <div class="stat-icon">👥</div>
+                        <div class="stat-info">
+                            <span class="stat-label">学生总数</span>
+                            <span class="stat-value" id="totalStudents">--</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">🔍</div>
+                        <div class="stat-info">
+                            <span class="stat-label">查询方式</span>
+                            <span class="stat-value">3 种</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">➕</div>
+                        <div class="stat-info">
+                            <span class="stat-label">新增学生</span>
+                            <span class="stat-value">支持</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">🗑️</div>
+                        <div class="stat-info">
+                            <span class="stat-label">删除学生</span>
+                            <span class="stat-value">按ID</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dashboard-info">
+                    <h2>系统信息</h2>
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <span class="info-label">后端框架</span>
+                            <span class="info-value">Spring Boot 4.1.0</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">数据库</span>
+                            <span class="info-value">MySQL</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">持久层</span>
+                            <span class="info-value">JPA / Hibernate</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Java 版本</span>
+                            <span class="info-value">17</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">默认端口</span>
+                            <span class="info-value">8080</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">数据格式</span>
+                            <span class="info-value">JSON</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="quick-actions">
+                    <h2>快捷操作</h2>
+                    <div class="action-buttons">
+                        <button class="btn btn-primary" onclick="navigateTo('search')">🔍 查询学生</button>
+                        <button class="btn btn-success" onclick="navigateTo('add')">➕ 新增学生</button>
+                        <button class="btn btn-danger" onclick="navigateTo('delete')">🗑️ 删除学生</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 查询学生页面 -->
+            <section class="page hidden" id="page-search">
+                <div class="search-container">
+                    <div class="search-tabs">
+                        <button class="tab-btn active" data-tab="byId">按 ID 查询</button>
+                        <button class="tab-btn" data-tab="byName">按姓名查询</button>
+                        <button class="tab-btn" data-tab="byNo">按学号查询</button>
+                    </div>
+
+                    <div class="search-panel" id="panel-byId">
+                        <div class="input-group">
+                            <label for="searchId">学生 ID</label>
+                            <input type="number" id="searchId" placeholder="请输入学生 ID" min="1">
+                            <button class="btn btn-primary" onclick="searchById()">查询</button>
+                        </div>
+                    </div>
+
+                    <div class="search-panel hidden" id="panel-byName">
+                        <div class="input-group">
+                            <label for="searchName">学生姓名</label>
+                            <input type="text" id="searchName" placeholder="请输入学生姓名">
+                            <button class="btn btn-primary" onclick="searchByName()">查询</button>
+                        </div>
+                    </div>
+
+                    <div class="search-panel hidden" id="panel-byNo">
+                        <div class="input-group">
+                            <label for="searchNo">学号</label>
+                            <input type="text" id="searchNo" placeholder="请输入学号">
+                            <button class="btn btn-primary" onclick="searchByNo()">查询</button>
+                        </div>
+                    </div>
+
+                    <!-- 查询结果展示 -->
+                    <div class="result-section" id="searchResult">
+                        <div class="result-placeholder">
+                            <span class="placeholder-icon">📋</span>
+                            <p>请输入查询条件并点击查询按钮</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 新增学生页面 -->
+            <section class="page hidden" id="page-add">
+                <div class="form-container">
+                    <h2>新增学生</h2>
+                    <form id="addStudentForm" onsubmit="return handleAddStudent(event)">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="addStudentNo">学号 <span class="required">*</span></label>
+                                <input type="text" id="addStudentNo" placeholder="请输入学号" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="addName">姓名 <span class="required">*</span></label>
+                                <input type="text" id="addName" placeholder="请输入姓名" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="addAge">年龄 <span class="required">*</span></label>
+                                <input type="number" id="addAge" placeholder="请输入年龄" min="1" max="150" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="addClassName">班级编号 <span class="required">*</span></label>
+                                <input type="number" id="addClassName" placeholder="请输入班级编号" min="1" required>
+                            </div>
+                        </div>
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-success">✅ 确认新增</button>
+                            <button type="reset" class="btn btn-secondary">🔄 重置表单</button>
+                        </div>
+                    </form>
+
+                    <!-- 操作结果 -->
+                    <div class="result-section hidden" id="addResult"></div>
+                </div>
+            </section>
+
+            <!-- 删除学生页面 -->
+            <section class="page hidden" id="page-delete">
+                <div class="form-container">
+                    <h2>删除学生</h2>
+                    <div class="warning-banner">
+                        ⚠️ 删除操作不可恢复，请确认后再操作
+                    </div>
+                    <form id="deleteStudentForm" onsubmit="return handleDeleteStudent(event)">
+                        <div class="form-group">
+                            <label for="deleteId">学生 ID <span class="required">*</span></label>
+                            <input type="number" id="deleteId" placeholder="请输入要删除的学生 ID" min="1" required>
+                        </div>
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-danger">🗑️ 确认删除</button>
+                        </div>
+                    </form>
+
+                    <!-- 操作结果 -->
+                    <div class="result-section hidden" id="deleteResult"></div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Toast 通知 -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script src="app.js"></script>
+</body>
+</html>
