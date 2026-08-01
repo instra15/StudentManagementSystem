@@ -7,8 +7,14 @@ import com.example.studentmanagementsystem.DTO.StudentDTO;
 import com.example.studentmanagementsystem.Response;
 import com.example.studentmanagementsystem.exception.StudentAlreadyExist;
 import com.example.studentmanagementsystem.exception.StudentNotFoundException;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+
+
+
+
 
 @Service
 public class StudentServiceImpl implements StudentService{
@@ -89,18 +95,15 @@ public class StudentServiceImpl implements StudentService{
         }
     }
 
+    @Transactional
     public Response<StudentDTO> updateStudent(long id,StudentDTO studentDTO)
     {
-        try
-        {
-            Student student=studentRepository.findById(id).orElseThrow(()-> new StudentNotFoundException("id: " + id + "does not exist."));
-            Student student1=studentRepository.save(StudentConverter.Convert(studentDTO));
-            return Response.success(StudentConverter.Convert(student1));
-        }
-        catch (StudentNotFoundException e)
-        {
-            return Response.fail(e);
-        }
+        Student student=studentRepository.findById(id).orElseThrow(()->new StudentNotFoundException("id: " + id + " does not exist."));
+        student.setName(studentDTO.getName());
+        student.setAge(studentDTO.getAge());
+        student.setClassName(studentDTO.getClassName());
+        return Response.success(StudentConverter.Convert(student));
     }
+
 
 }
