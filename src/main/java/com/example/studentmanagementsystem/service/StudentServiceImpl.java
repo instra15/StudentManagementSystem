@@ -8,14 +8,11 @@ import com.example.studentmanagementsystem.Response;
 import com.example.studentmanagementsystem.exception.StudentAlreadyExist;
 import com.example.studentmanagementsystem.exception.StudentNotFoundException;
 import jakarta.transaction.Transactional;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-
-
-
-
-
+@Slf4j
 @Service
 public class StudentServiceImpl implements StudentService{
 
@@ -24,49 +21,31 @@ public class StudentServiceImpl implements StudentService{
 
     public Response<StudentDTO> getStudentById(Long id)
     {
-        try
-        {
-            Student student=studentRepository.findById(id).orElseThrow(()->new StudentNotFoundException("Student not found with id: "+id));
-            return Response.success(StudentConverter.Convert(student));
-        }
-        catch (StudentNotFoundException e)
-        {
-            return Response.fail(e);
-        }
+        Student student=studentRepository.findById(id).orElseThrow(()->new StudentNotFoundException("Student not found with id: "+id));
+        log.info("Search student by id: {}", id);
+        return Response.success(StudentConverter.Convert(student));
     }
 
     public Response<StudentDTO> getStudentByName(String name)
     {
-        try
+        Student student=studentRepository.findByName(name);
+        if(student==null)
         {
-            Student student=studentRepository.findByName(name);
-            if(student==null)
-            {
-                throw new StudentNotFoundException("Student not found with name: " + name);
-            }
-            return Response.success(StudentConverter.Convert(student));
+            throw new StudentNotFoundException("Student not found with name: " + name);
         }
-        catch (StudentNotFoundException e)
-        {
-            return Response.fail(e);
-        }
+        log.info("Search student by name: {}",name);
+        return Response.success(StudentConverter.Convert(student));
     }
 
     public Response<StudentDTO> getStudentByStudentNo(String studentNo)
     {
-        try
+        Student student=studentRepository.findByStudentNo(studentNo);
+        if(student==null)
         {
-            Student student=studentRepository.findByStudentNo(studentNo);
-            if(student==null)
-            {
-                throw new StudentNotFoundException("Student not found with no: " + studentNo);
-            }
-            return Response.success(StudentConverter.Convert(student));
+            throw new StudentNotFoundException("Student not found with no: " + studentNo);
         }
-        catch (StudentNotFoundException e)
-        {
-            return Response.fail(e);
-        }
+        log.info("Search student by student no: {}",studentNo);
+        return Response.success(StudentConverter.Convert(student));
     }
 
     public Response<StudentDTO> addNewStudent(StudentDTO studentDTO)
@@ -75,24 +54,19 @@ public class StudentServiceImpl implements StudentService{
         Student student1=studentRepository.findByStudentNo(student.getStudentNo());
         if(student1!=null)
         {
-            return Response.fail(new StudentAlreadyExist("Student: " + student.getStudentNo() + ":" + student.getName() + "exists."));
+            throw new StudentAlreadyExist("Student: " + student.getStudentNo() + " : " + student.getName() + " exists.");
         }
         Student student2=studentRepository.save(student);
+        log.info("Add student:studentno:{} name:{} age:{} classname:{}",studentDTO.getStudentNo(),studentDTO.getName(),studentDTO.getAge(),studentDTO.getClassName());
         return Response.success(StudentConverter.Convert(student2));
     }
 
     public Response<StudentDTO> deleteStudent(long id)
     {
-        try
-        {
-            Student student = studentRepository.findById(id).orElseThrow(() -> new StudentNotFoundException("id:" + id + "does not exist."));
-            studentRepository.delete(student);
-            return Response.success(null);
-        }
-        catch (StudentNotFoundException e)
-        {
-            return Response.fail(e);
-        }
+        Student student = studentRepository.findById(id).orElseThrow(() -> new StudentNotFoundException("id:" + id + "does not exist."));
+        studentRepository.delete(student);
+        log.info("Delete student by id:{}",id);
+        return Response.success(null);
     }
 
     @Transactional
@@ -102,6 +76,7 @@ public class StudentServiceImpl implements StudentService{
         student.setName(studentDTO.getName());
         student.setAge(studentDTO.getAge());
         student.setClassName(studentDTO.getClassName());
+        log.info("Update student ");
         return Response.success(StudentConverter.Convert(student));
     }
 

@@ -1,0 +1,42 @@
+
+2026-08-01T23:22:31.830+08:00  INFO 34660 --- [StudentManagementSystem] [main] c.e.s.StudentManagementSystemApplication : Starting StudentManagementSystemApplication using Java 17.0.20 with PID 34660 (C:\Users\admin\Desktop\StudentManagementSystem\target\classes started by admin in C:\Users\admin\Desktop\StudentManagementSystem)
+2026-08-01T23:22:31.836+08:00  INFO 34660 --- [StudentManagementSystem] [main] c.e.s.StudentManagementSystemApplication : No active profile set, falling back to 1 default profile: "default"
+2026-08-01T23:22:32.499+08:00  INFO 34660 --- [StudentManagementSystem] [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-08-01T23:22:32.564+08:00  INFO 34660 --- [StudentManagementSystem] [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 52 ms. Found 1 JPA repository interface.
+2026-08-01T23:22:33.135+08:00  INFO 34660 --- [StudentManagementSystem] [main] o.s.boot.tomcat.TomcatWebServer          : Tomcat initialized with port 8080 (http)
+2026-08-01T23:22:33.150+08:00  INFO 34660 --- [StudentManagementSystem] [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-08-01T23:22:33.151+08:00  INFO 34660 --- [StudentManagementSystem] [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/11.0.22]
+2026-08-01T23:22:33.225+08:00  INFO 34660 --- [StudentManagementSystem] [main] b.w.c.s.WebApplicationContextInitializer : Root WebApplicationContext: initialization completed in 1319 ms
+2026-08-01T23:22:33.511+08:00  INFO 34660 --- [StudentManagementSystem] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-08-01T23:22:33.849+08:00  INFO 34660 --- [StudentManagementSystem] [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@7aea704c
+2026-08-01T23:22:33.851+08:00  INFO 34660 --- [StudentManagementSystem] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-08-01T23:22:33.893+08:00  INFO 34660 --- [StudentManagementSystem] [main] org.hibernate.orm.jpa                    : HHH008540: Processing PersistenceUnitInfo [name: default]
+2026-08-01T23:22:33.950+08:00  INFO 34660 --- [StudentManagementSystem] [main] org.hibernate.orm.core                   : HHH000001: Hibernate ORM core version 7.4.1.Final
+2026-08-01T23:22:34.594+08:00  INFO 34660 --- [StudentManagementSystem] [main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-08-01T23:22:34.690+08:00  INFO 34660 --- [StudentManagementSystem] [main] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [jdbc:mysql://localhost:3306/student_management?characterEncoding=UTF-8]
+	Database driver: MySQL Connector/J
+	Database dialect: MySQLDialect
+	Database version: 8.0.46
+	Default catalog/schema: student_management/undefined
+	Autocommit mode: undefined/unknown
+	Isolation level: REPEATABLE_READ [default REPEATABLE_READ]
+	JDBC fetch size: none
+	Pool: DataSourceConnectionProvider
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-08-01T23:22:35.359+08:00  INFO 34660 --- [StudentManagementSystem] [main] org.hibernate.orm.core                   : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-08-01T23:22:35.366+08:00  INFO 34660 --- [StudentManagementSystem] [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-08-01T23:22:35.443+08:00  INFO 34660 --- [StudentManagementSystem] [main] o.s.d.j.r.query.QueryEnhancerFactories   : Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-08-01T23:22:35.733+08:00  WARN 34660 --- [StudentManagementSystem] [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-08-01T23:22:36.062+08:00  INFO 34660 --- [StudentManagementSystem] [main] o.s.boot.tomcat.TomcatWebServer          : Tomcat started on port 8080 (http) with context path '/'
+2026-08-01T23:22:36.067+08:00  INFO 34660 --- [StudentManagementSystem] [main] c.e.s.StudentManagementSystemApplication : Started StudentManagementSystemApplication in 4.752 seconds (process running for 5.159)
+2026-08-01T23:23:30.600+08:00  INFO 34660 --- [StudentManagementSystem] [http-nio-8080-exec-2] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-08-01T23:23:30.600+08:00  INFO 34660 --- [StudentManagementSystem] [http-nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2026-08-01T23:23:30.601+08:00  INFO 34660 --- [StudentManagementSystem] [http-nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : Completed initialization in 0 ms
+2026-08-01T23:23:30.705+08:00  INFO 34660 --- [StudentManagementSystem] [http-nio-8080-exec-2] c.e.s.service.StudentServiceImpl         : Search student by id: 1
+2026-08-01T23:24:13.530+08:00  INFO 34660 --- [StudentManagementSystem] [SpringApplicationShutdownHook] o.s.boot.tomcat.GracefulShutdown         : Commencing graceful shutdown. Waiting for active requests to complete
+2026-08-01T23:24:13.845+08:00  INFO 34660 --- [StudentManagementSystem] [tomcat-shutdown] o.s.boot.tomcat.GracefulShutdown         : Graceful shutdown complete
+2026-08-01T23:24:13.847+08:00  INFO 34660 --- [StudentManagementSystem] [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-08-01T23:24:13.849+08:00  INFO 34660 --- [StudentManagementSystem] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2026-08-01T23:24:13.856+08:00  INFO 34660 --- [StudentManagementSystem] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.

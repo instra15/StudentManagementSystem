@@ -3,9 +3,11 @@ package com.example.studentmanagementsystem.controller;
 import com.example.studentmanagementsystem.DTO.StudentDTO;
 import com.example.studentmanagementsystem.Response;
 import com.example.studentmanagementsystem.service.StudentService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+@Slf4j
 @RestController
 public class StudentController {
 
