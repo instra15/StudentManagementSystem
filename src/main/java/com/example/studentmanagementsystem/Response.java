@@ -15,17 +15,28 @@ public class Response<T> {
 
     private String errorMsg;
 
-    public static <K> Response<K> isSuccess(K data,Exception e)
+    public static <K> Response<K> success(K data)
     {
         Response<K> response=new Response<>();
-        if(e!=null)
-        {
-            response.setSuccess(false);
-            response.setErrorMsg(e.getMessage());
-            return response;
-        }
         response.setData(data);
         response.setSuccess(true);
+        return response;
+    }
+
+    public static <K> Response<K> fail(K data,Exception e)
+    {
+        Response<K> response=new Response<>();
+        response.setData(data);
+        response.setSuccess(false);
+        response.setErrorMsg(e.getMessage());
+        return response;
+    }
+
+    public static <K> Response<K> fail(Exception e)
+    {
+        Response<K> response=new Response<>();
+        response.setSuccess(false);
+        response.setErrorMsg(e.getMessage());
         return response;
     }
 

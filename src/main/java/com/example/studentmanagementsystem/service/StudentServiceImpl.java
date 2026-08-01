@@ -21,11 +21,11 @@ public class StudentServiceImpl implements StudentService{
         try
         {
             Student student=studentRepository.findById(id).orElseThrow(()->new StudentNotFoundException("Student not found with id: "+id));
-            return Response.isSuccess(StudentConverter.Convert(student),null);
+            return Response.success(StudentConverter.Convert(student));
         }
         catch (StudentNotFoundException e)
         {
-            return Response.isSuccess(null,e);
+            return Response.fail(e);
         }
     }
 
@@ -38,11 +38,11 @@ public class StudentServiceImpl implements StudentService{
             {
                 throw new StudentNotFoundException("Student not found with name: " + name);
             }
-            return Response.isSuccess(StudentConverter.Convert(student),null);
+            return Response.success(StudentConverter.Convert(student));
         }
         catch (StudentNotFoundException e)
         {
-            return Response.isSuccess(null,e);
+            return Response.fail(e);
         }
     }
 
@@ -55,11 +55,11 @@ public class StudentServiceImpl implements StudentService{
             {
                 throw new StudentNotFoundException("Student not found with no: " + studentNo);
             }
-            return Response.isSuccess(StudentConverter.Convert(student),null);
+            return Response.success(StudentConverter.Convert(student));
         }
         catch (StudentNotFoundException e)
         {
-            return Response.isSuccess(null,e);
+            return Response.fail(e);
         }
     }
 
@@ -69,10 +69,10 @@ public class StudentServiceImpl implements StudentService{
         Student student1=studentRepository.findByStudentNo(student.getStudentNo());
         if(student1!=null)
         {
-            return Response.isSuccess(null,new StudentAlreadyExist("Student: " + student.getStudentNo() + ":" + student.getName() + "exists."));
+            return Response.fail(new StudentAlreadyExist("Student: " + student.getStudentNo() + ":" + student.getName() + "exists."));
         }
         Student student2=studentRepository.save(student);
-        return Response.isSuccess(StudentConverter.Convert(student2),null);
+        return Response.success(StudentConverter.Convert(student2));
     }
 
     public Response<StudentDTO> deleteStudent(long id)
@@ -81,13 +81,26 @@ public class StudentServiceImpl implements StudentService{
         {
             Student student = studentRepository.findById(id).orElseThrow(() -> new StudentNotFoundException("id:" + id + "does not exist."));
             studentRepository.delete(student);
-            return Response.isSuccess(null,null);
+            return Response.success(null);
         }
         catch (StudentNotFoundException e)
         {
-            return Response.isSuccess(null,e);
+            return Response.fail(e);
         }
     }
 
+    public Response<StudentDTO> updateStudent(long id,StudentDTO studentDTO)
+    {
+        try
+        {
+            Student student=studentRepository.findById(id).orElseThrow(()-> new StudentNotFoundException("id: " + id + "does not exist."));
+            Student student1=studentRepository.save(StudentConverter.Convert(studentDTO));
+            return Response.success(StudentConverter.Convert(student1));
+        }
+        catch (StudentNotFoundException e)
+        {
+            return Response.fail(e);
+        }
+    }
 
 }

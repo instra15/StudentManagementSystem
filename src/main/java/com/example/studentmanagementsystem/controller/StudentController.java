@@ -36,12 +36,16 @@ public class StudentController {
         return studentService.addNewStudent(studentDTO);
     }
 
-
     @DeleteMapping("/student/delete/id/{id}")
     public Response<StudentDTO> deleteStudent(@PathVariable long id)
     {
         return studentService.deleteStudent(id);
     }
 
+    @PutMapping("/student/update/id/{id}")
+    public Response<StudentDTO> updateStudent(@PathVariable long id,@RequestBody StudentDTO studentDTO)
+    {
+        return studentService.updateStudent(id,studentDTO);
+    }
 
 }
