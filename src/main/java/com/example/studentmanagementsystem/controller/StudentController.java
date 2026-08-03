@@ -1,10 +1,14 @@
 package com.example.studentmanagementsystem.controller;
 
 import com.example.studentmanagementsystem.DTO.StudentDTO;
+import com.example.studentmanagementsystem.DTO.group.AddGroup;
+import com.example.studentmanagementsystem.DTO.group.UpdateGroup;
 import com.example.studentmanagementsystem.Response;
 import com.example.studentmanagementsystem.service.StudentService;
+import jakarta.validation.constraints.Min;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @Slf4j
@@ -34,19 +38,19 @@ public class StudentController {
     }
 
     @PostMapping("/student/add")
-    public Response<StudentDTO> addNewStudent(@RequestBody StudentDTO studentDTO)
+    public Response<StudentDTO> addNewStudent(@Validated(AddGroup.class) @RequestBody StudentDTO studentDTO)
     {
         return studentService.addNewStudent(studentDTO);
     }
 
     @DeleteMapping("/student/delete/id/{id}")
-    public Response<StudentDTO> deleteStudent(@PathVariable long id)
+    public Response<StudentDTO> deleteStudent(@PathVariable @Min(1) long id)
     {
         return studentService.deleteStudent(id);
     }
 
     @PutMapping("/student/update/id/{id}")
-    public Response<StudentDTO> updateStudent(@PathVariable long id,@RequestBody StudentDTO studentDTO)
+    public Response<StudentDTO> updateStudent(@PathVariable @Min(1) long id,@Validated(UpdateGroup.class) @RequestBody StudentDTO studentDTO)
     {
         return studentService.updateStudent(id,studentDTO);
     }

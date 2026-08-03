@@ -73,10 +73,10 @@ public class StudentServiceImpl implements StudentService{
     public Response<StudentDTO> updateStudent(long id,StudentDTO studentDTO)
     {
         Student student=studentRepository.findById(id).orElseThrow(()->new StudentNotFoundException("id: " + id + " does not exist."));
-        student.setName(studentDTO.getName());
-        student.setAge(studentDTO.getAge());
-        student.setClassName(studentDTO.getClassName());
-        log.info("Update student ");
+        if (studentDTO.getName()!=null)     student.setName(studentDTO.getName());
+        if (studentDTO.getAge()!=null)   student.setAge(studentDTO.getAge());
+        if (studentDTO.getClassName()!=null)   student.setClassName(studentDTO.getClassName());
+        log.info("Update student.");
         return Response.success(StudentConverter.Convert(student));
     }
 
