@@ -1,9 +1,13 @@
 package com.example.studentmanagementsystem.service;
 
 
-import com.example.studentmanagementsystem.DAO.Student;
 import com.example.studentmanagementsystem.DTO.StudentDTO;
 import com.example.studentmanagementsystem.Response;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
+import java.util.List;
+import java.util.Map;
 
 public interface StudentService {
     Response<StudentDTO> getStudentById(Long id);
@@ -14,7 +18,14 @@ public interface StudentService {
 
     Response<StudentDTO> addNewStudent(StudentDTO studentDTO);
 
-    Response<StudentDTO> deleteStudent(long id);
+    Response<Map<String,Long>> deleteStudent(long id);
+
+    Response<Map<String,List<Long>>> deleteStudentByList(List<Long> idList);
 
     Response<StudentDTO> updateStudent(long id,StudentDTO studentDTO);
+
+    Response<Page<StudentDTO>> searchAllStudent(Pageable pageable);
+
+
+
 }

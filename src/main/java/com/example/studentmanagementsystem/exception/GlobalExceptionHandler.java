@@ -2,6 +2,7 @@ package com.example.studentmanagementsystem.exception;
 
 import com.example.studentmanagementsystem.Response;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -17,7 +18,7 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public Response<Void> handleStudentNotFound(StudentNotFoundException e)
     {
-        log.info("Find student but fail:student does not exist.");
+        log.error("Find student but fail:student does not exist.");
         return Response.fail(e);
     }
 
@@ -25,7 +26,7 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.CONFLICT)
     public Response<Void> handleStudentAlreadyExistException(StudentAlreadyExist e)
     {
-        log.info("Find student but fail:student has already existed.");
+        log.error("Find student but fail:student has already existed.");
         return Response.fail(e);
     }
 
@@ -33,7 +34,7 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public Response<Void> handleMethodArgumentNotValidException(MethodArgumentNotValidException e)
     {
-        log.info("Valid student object added.");
+        log.error("Valid student object added.");
         return Response.fail(e);
     }
 
@@ -41,7 +42,15 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public Response<Void> handleBindException(BindException e)
     {
-        log.info("Valid student object added .");
+        log.error("Valid student object added .");
+        return Response.fail(e);
+    }
+
+    @ExceptionHandler(InvalidDataAccessApiUsageException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public Response<Void> handlePageableException(InvalidDataAccessApiUsageException e)
+    {
+        log.error("Invalid pageable data.");
         return Response.fail(e);
     }
 
@@ -49,7 +58,7 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public Response<Void> handleOtherException(Exception e)
     {
-        log.info("Unknown error.");
+        log.error("Unknown error.");
         return Response.fail(e);
     }
 

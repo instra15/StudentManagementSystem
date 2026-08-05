@@ -10,7 +10,14 @@ import com.example.studentmanagementsystem.exception.StudentNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @Service
@@ -61,12 +68,41 @@ public class StudentServiceImpl implements StudentService{
         return Response.success(StudentConverter.Convert(student2));
     }
 
-    public Response<StudentDTO> deleteStudent(long id)
+    public Response<Map<String,Long>> deleteStudent(long id)
     {
         Student student = studentRepository.findById(id).orElseThrow(() -> new StudentNotFoundException("id:" + id + "does not exist."));
+        Map<String,Long> result=new HashMap<>();
+        result.put("Delete student by id:",id);
         studentRepository.delete(student);
         log.info("Delete student by id:{}",id);
-        return Response.success(null);
+        return Response.success(result);
+    }
+
+    /**
+     * 当前 foundId.contains(id) 是 O(n) 操作，将 foundId 转为 Set 可将查找降到 O(1)。
+     *
+     */
+    @Transactional
+    public Response<Map<String,List<Long>>> deleteStudentByList(List<Long> idList)
+    {
+        Map<String,List<Long>> result=new HashMap<>();
+        List<Student> foundStudent=studentRepository.findAllById(idList);
+        List<Long> foundId=foundStudent.stream().map(Student::getId).toList();
+        List<Long> unfoundId=new ArrayList<>();
+        for (Long id : idList)
+        {
+            if (!foundId.contains(id))
+            {
+                unfoundId.add(id);
+            }
+        }
+
+        studentRepository.deleteAllByIdInBatch(foundId);
+
+
+        result.put("These id has been deleted:",foundId);
+        result.put("These id can not been found:",unfoundId);
+        return Response.success(result);
     }
 
     @Transactional
@@ -78,6 +114,13 @@ public class StudentServiceImpl implements StudentService{
         if (studentDTO.getClassName()!=null)   student.setClassName(studentDTO.getClassName());
         log.info("Update student.");
         return Response.success(StudentConverter.Convert(student));
+    }
+
+    public Response<Page<StudentDTO>> searchAllStudent(Pageable pageable)
+    {
+        Page<Student> page=studentRepository.findAll(pageable);
+        Page<StudentDTO> page1=page.map(StudentConverter::Convert);
+        return Response.success(page1);
     }
 
 
