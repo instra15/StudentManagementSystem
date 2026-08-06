@@ -14,10 +14,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -131,12 +129,53 @@ public class StudentServiceImpl implements StudentService{
         return Response.success(page1);
     }
 
-    public Page<StudentDTO> getAllStudentContaining(String keyword, Pageable pageable)
+    public Response<Page<StudentDTO>> getAllStudentContaining(String keyword, Pageable pageable)
     {
         Page<Student> result=studentRepository.findByNameContaining(keyword,pageable);
         log.info("Search students by name containing keyword: {}",keyword);
-        return result.map(StudentConverter::Convert);
+        return Response.success(result.map(StudentConverter::Convert));
     }
 
+    @Transactional
+    public Response<Map<String, List<String>>> addBatchStudent(List<StudentDTO> studentDTOS)
+    {
+        Set<String> allStudentNo=new HashSet<>();
+        for (StudentDTO studentDTO : studentDTOS)
+        {
+            if(!allStudentNo.add(studentDTO.getStudentNo()))
+            {
+                throw new IllegalArgumentException("Students list have repetitive student no. ");
+            }
+        }
+
+        Set<String> existingStudentNo=studentRepository.findByStudentNoIn(allStudentNo.stream().toList())
+                .stream().map(Student::getStudentNo).collect(Collectors.toSet());
+
+        Set<String> toAddStudentNo=new HashSet<>(allStudentNo);
+        toAddStudentNo.removeAll(existingStudentNo);
+
+        List<Student> toAddStudent=new ArrayList<>();
+        for (StudentDTO studentDTO : studentDTOS)
+        {
+            if (toAddStudentNo.contains(studentDTO.getStudentNo()))
+            {
+                toAddStudent.add(StudentConverter.Convert(studentDTO));
+            }
+        }
+        /*
+          #可修改
+          可以改为.removeIf()函数
+          优点：
+          只遍历一次 toAddStudent，每次检查 contains 在 Set 中是 O(1)。
+          底层使用 ArrayList 的 fastRemove，只移动一次元素（批量移除）。
+          代码意图清晰，性能优秀（O(n)）。
+         */
+        List<Student> addStudents = studentRepository.saveAll(toAddStudent);
+        Map<String,List<String>> result=new HashMap<>();
+        result.put("Add successfully: ",toAddStudentNo.stream().toList());
+        result.put("Block adding: ",existingStudentNo.stream().toList());
+        log.info("Add a batch of students: success: {}, fail: {}",toAddStudentNo,existingStudentNo);
+        return Response.success(result);
+    }
 
 }

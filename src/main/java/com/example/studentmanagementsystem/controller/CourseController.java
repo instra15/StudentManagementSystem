@@ -8,15 +8,17 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@RequestMapping("/course")
 public class CourseController {
 
     @Autowired
     private CourseService courseService;
 
-    @GetMapping("/course/search/page")
+    @GetMapping("/search/page")
     public Response<Page<CourseDTO>> searchAllCourse(@PageableDefault Pageable pageable)
     {
         return courseService.searchAllCourse(pageable);

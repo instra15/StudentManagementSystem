@@ -3,6 +3,7 @@ package com.example.studentmanagementsystem.service;
 
 import com.example.studentmanagementsystem.DTO.StudentDTO;
 import com.example.studentmanagementsystem.Response;
+import jakarta.validation.constraints.NotEmpty;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -26,5 +27,7 @@ public interface StudentService {
 
     Response<Page<StudentDTO>> searchAllStudent(Pageable pageable);
 
-    Page<StudentDTO> getAllStudentContaining(String keyword, Pageable pageable);
+    Response<Page<StudentDTO>> getAllStudentContaining(String keyword, Pageable pageable);
+
+    Response<Map<String, List<String>>> addBatchStudent(@NotEmpty List<StudentDTO> studentDTOS);
 }
