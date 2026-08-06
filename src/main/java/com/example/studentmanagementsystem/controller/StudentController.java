@@ -26,6 +26,9 @@ public class StudentController {
     @Autowired
     private StudentService studentService;
 
+    /**
+     *  ‘@PathVariable’ 从url提取参数
+     */
     @GetMapping("/student/search/id/{id}")
     public Response<StudentDTO> SearchStudentById(@PathVariable long id)
     {
@@ -44,12 +47,24 @@ public class StudentController {
         return studentService.getStudentByStudentNo(no);
     }
 
+    /**
+     *  ‘@PageableDefault’ 从url读取分页逻辑
+     */
     @GetMapping("/student/search/page")
     public Response<Page<StudentDTO>> SearchAllStudent(@PageableDefault Pageable pageable)
     {
         return studentService.searchAllStudent(pageable);
     }
 
+    @GetMapping("/student/search/page/keyword={keyword}")
+    public Page<StudentDTO> SearchAllStudentContaining(@PathVariable String keyword, @PageableDefault Pageable pageable)
+    {
+        return studentService.getAllStudentContaining(keyword,pageable);
+    }
+
+    /**
+     * '@RequestBody' 从前端接受json对象
+     */
     @PostMapping("/student/add")
     public Response<StudentDTO> addNewStudent(@Validated(AddGroup.class) @RequestBody StudentDTO studentDTO)
     {

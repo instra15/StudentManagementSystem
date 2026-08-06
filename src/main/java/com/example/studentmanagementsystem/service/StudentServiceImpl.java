@@ -80,7 +80,8 @@ public class StudentServiceImpl implements StudentService{
 
     /**
      * 当前 foundId.contains(id) 是 O(n) 操作，将 foundId 转为 Set 可将查找降到 O(1)。
-     *
+     * 用map存储删除信息
+     * 用@Transactional 事务注解保证错误回滚
      */
     @Transactional
     public Response<Map<String,List<Long>>> deleteStudentByList(List<Long> idList)
@@ -102,6 +103,7 @@ public class StudentServiceImpl implements StudentService{
 
         result.put("These id has been deleted:",foundId);
         result.put("These id can not been found:",unfoundId);
+        log.info("Delete students:(id) {}",foundId);
         return Response.success(result);
     }
 
@@ -116,11 +118,24 @@ public class StudentServiceImpl implements StudentService{
         return Response.success(StudentConverter.Convert(student));
     }
 
+    /**
+     * 分页查找
+     * Pageable是请求
+     * Page是结果
+     */
     public Response<Page<StudentDTO>> searchAllStudent(Pageable pageable)
     {
         Page<Student> page=studentRepository.findAll(pageable);
         Page<StudentDTO> page1=page.map(StudentConverter::Convert);
+        log.info("Search students by page.");
         return Response.success(page1);
+    }
+
+    public Page<StudentDTO> getAllStudentContaining(String keyword, Pageable pageable)
+    {
+        Page<Student> result=studentRepository.findByNameContaining(keyword,pageable);
+        log.info("Search students by name containing keyword: {}",keyword);
+        return result.map(StudentConverter::Convert);
     }
 
 

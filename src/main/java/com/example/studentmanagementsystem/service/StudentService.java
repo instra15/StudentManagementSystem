@@ -26,6 +26,5 @@ public interface StudentService {
 
     Response<Page<StudentDTO>> searchAllStudent(Pageable pageable);
 
-
-
+    Page<StudentDTO> getAllStudentContaining(String keyword, Pageable pageable);
 }
